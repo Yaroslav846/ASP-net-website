@@ -1,0 +1,27 @@
+version: '3.4'
+
+services:
+  api:
+    container_name: api
+    image: ${DOCKER_REGISTRY-}kitchen
+    build:
+      context: .
+      dockerfile: Api/Dockerfile
+
+  client:
+    container_name: client
+    image: pclient
+    build:
+      context: ./Client
+      dockerfile: Dockerfile
+
+  postgres_db:
+    container_name: postgres
+    image: postgres:latest
+
+  proxy:
+    container_name: nginx
+    image: nginx:mainline
+
+volumes:
+  postgres-data:

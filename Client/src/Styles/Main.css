@@ -1,0 +1,228 @@
+/* styles.module.css */
+
+body {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.navbar {
+  display: flex;
+  align-items: center;
+}
+
+.logo {
+  font-size: 40px;
+  font-weight: 500;
+}
+
+.vk {
+  margin-right: 15px;
+}
+
+.city {
+  font-size: 28px;
+  font-weight: 300;
+}
+
+.number {
+  font-size: 36px;
+  font-weight: 300;
+}
+
+.main {
+  padding: 5rem 0;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+/*footer*/
+
+.back {
+  width: auto;
+  height: 350px;
+  background: #D6D6D6;
+}
+
+/*Visitcard*/
+
+.backram {
+  border: 2px solid black;
+  color: black;
+  background-color: white;
+  padding: 25px;
+  transition: transform 0.3s ease; /* Добавляем анимацию для плавного изменения размера */
+}
+
+.backram:hover {
+  transform: scale(1.1); /* Увеличиваем блок при наведении на 10% */
+}
+
+.parent {
+  display: flex;
+  flex-direction: column;
+}
+
+.head {
+  font-size: 128px;
+  font-weight: 300;
+  margin-top: 105px;
+}
+
+.paragraph {
+  width: 570px;
+  font-size: 24px;
+  font-weight: 300;
+}
+
+.mid {
+  display: flex;
+  justify-content: space-between;
+}
+
+.button {
+  display: block;
+  width: 300px;
+  border: 2px solid black;
+  border-radius: 50px;
+  color: black;
+  background-color: white;
+  font-weight: 400;
+}
+
+.image1 {
+  margin-top: 65px;
+}
+
+.section {
+  margin-top: 50px;
+}
+
+.line {
+  margin-right: 20px;
+  width: auto;
+  height: 5px;
+  background: #666666;
+  border-radius: 50px;
+} 
+
+.lineh {
+  width: 5px;
+  height: 150px;
+  background: #666666;
+  border-radius: 50px;
+}
+
+.underblock {
+  margin-top: 5px;
+  display: flex;
+  align-items: flex-start;
+}
+
+.section {
+  display: flex;
+}
+
+.textblock {
+  width: auto;
+  margin-inline: 20px;
+}
+
+.heading {
+  margin-right: 200px;
+  font-size: 48px;
+  font-weight: 600;
+}
+
+.bigbutton {
+  margin-top: 50px;
+  display: block;
+  width: -webkit-fill-available;
+  height: 80px;
+  border: 2px solid black;
+  border-radius: 50px;
+  color: black;
+  background-color: white;
+  font-weight: 400;
+  font-size: 36px;
+}
+
+.top_he {
+  width: 250px;
+  white-space: nowrap;
+  font-size: 32px;
+  font-weight: 200;
+}
+
+.jk {
+  margin-left: 80px;
+}
+
+.booxvisit {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-column-gap: 45px;
+  grid-row-gap: 30px;
+}
+
+.underheading {
+  font-size: 24px;
+  font-weight: 300;
+}
+
+.half-screen-block {
+  margin-bottom: 50px;
+  width: 100%;
+}
+
+.left-half {
+  width: 50%;
+  box-sizing: border-box;
+}
+
+.left-half img {
+  width: 100%;
+  height: 100%;
+}
+
+.right-half {
+  background: '#736A5E';
+  width: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.quiz-button {
+  background-color: #ffffff;
+  color: 736A5E;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.quiz-button:hover {
+  background-color: #5D5348;
+}
+
+.quiz-enter {
+  opacity: 0;
+}
+
+.quiz-enter-active {
+  opacity: 1;
+  transition: opacity 500ms;
+}
+
+.quiz-exit {
+  opacity: 1;
+}
+
+.quiz-exit-active {
+  opacity: 0;
+  transition: opacity 500ms;
+}
