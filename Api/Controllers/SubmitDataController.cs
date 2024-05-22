@@ -1,13 +1,13 @@
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using ReactApp1.Server.DbAcsess;
-using ReactApp1.Server.Models;
 using System.Net;
 using System.Net.Mail;
-using static ReactApp1.Server.Models.SubmitData;
+using Api.Contracts;
+using Api.Server.Data;
+using Api.Models;
 
-namespace ReactApp1.Server.Controllers
+namespace Api.Server.Controllers
 {
 
     [ApiController]
@@ -22,10 +22,21 @@ namespace ReactApp1.Server.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] FormData formData)
+        public async Task<IActionResult> Post([FromBody] CreateSubmitRequest request)
         {
             try
             {
+                // Convert object[] to SubmitData.QuestionAnswer[]
+                var questionsArray = JsonConvert.DeserializeObject<SubmitData.QuestionAnswer[]>(JsonConvert.SerializeObject(request.Questions));
+
+                var formData = new SubmitData
+                (
+                    request.Name,
+                    request.Phone,
+                    request.Email,
+                    questionsArray
+                );
+
                 // Save data to PostgreSQL
                 await SaveToDatabase(formData);
 
@@ -33,34 +44,27 @@ namespace ReactApp1.Server.Controllers
                 await SendToEmail(formData);
 
                 // Send data to Telegram
-                await SendToTelegram(formData);
+                //await SendToTelegram(formData);
 
                 return Ok();
             }
             catch (Exception ex)
             {
+                Console.WriteLine($"An error occurred while saving the entity changes: {ex.Message}");
+                if (ex.InnerException != null)
+                {
+                    Console.WriteLine($"Inner Exception: {ex.InnerException.Message}");
+                }
                 return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
             }
         }
 
-        private async Task SaveToDatabase(FormData formData)
+        private async Task SaveToDatabase(SubmitData formData)
         {
-            var entity = new FormDataEntity
-            {
-                Name = formData.Name,
-                Phone = formData.Phone,
-                Email = formData.Email,
-                Questions = JsonConvert.SerializeObject(formData.Questions)
-            };
-
-            // Добавление сущности в контекст базы данных
-            _dbContext.FormDataEntities.Add(entity);
-
-            // Сохранение изменений в базе данных
+            _dbContext.SubmitData.Add(formData);
             await _dbContext.SaveChangesAsync();
         }
-
-        private async Task SendToEmail(FormData formData)
+        private async Task SendToEmail(SubmitData formData)
         {
             // Configure SMTP client
             using (var client = new SmtpClient("smtp.mail.ru"))
@@ -70,7 +74,7 @@ namespace ReactApp1.Server.Controllers
                 client.EnableSsl = true;
 
                 // Serialize questions array to JSON
-                string questionsFormatted = string.Join("\n", formData.Questions.Select(q => $"{q.Question}: {GetAnswerString(q.Answer, q.Dimensions)}"));
+                string questionsFormatted = string.Join("\n", formData.QuestionAnswers.Select(q => $"{q.Question}: {GetAnswerString(q.Answer, q.Dimensions)}"));
 
                 // Construct email message
                 var message = new MailMessage("kitchenquiz@mail.ru", "yaroslavend@gmail.com")
@@ -84,13 +88,13 @@ namespace ReactApp1.Server.Controllers
             }
         }
 
-        private async Task SendToTelegram(FormData formData)
+        private async Task SendToTelegram(SubmitData formData)
         {
             // Assuming you have a Telegram bot configured with a token
             string botToken = "5092471384:AAFazmiwop5RVwG3m0TvemMP4vXB5mGx2AE";
             string chatId = "-1001562286424"; // Replace with your chat ID
 
-            string questionsFormatted = string.Join("\n", formData.Questions.Select(q => $"{q.Question}: {GetAnswerString(q.Answer, q.Dimensions)}"));
+            string questionsFormatted = string.Join("\n", formData.QuestionAnswers.Select(q => $"{q.Question}: {GetAnswerString(q.Answer, q.Dimensions)}"));
 
             string message = $"Новый клиент прошел опрос!\nЕго зовут: {formData.Name}\nНомер телефона: {formData.Phone}\nПочта: {formData.Email}\nОтветы на вопросы:\n{questionsFormatted}";
 
