@@ -1,6 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using ReactApp1.Server.DbAcsess;
+using Api.Server.Data;
+using Api.Data;
+using Api.Helpers;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,6 +15,8 @@ var configuration = new ConfigurationBuilder()
 builder.Services.AddControllers();
 builder.Services.AddScoped<MyDbContext>();
 builder.Services.AddControllers().AddNewtonsoftJson();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<JwtService>();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
