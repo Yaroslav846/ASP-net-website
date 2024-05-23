@@ -1,3 +1,3 @@
-namespace MyNotes.Contracts;
+namespace Api.Contracts;
 
-public record GetNotesResponse(List<NoteDto> notes);
+public record GetNotesResponse(List<QuestionDto> notes);

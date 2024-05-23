@@ -21,7 +21,7 @@ export default function AppShell() {
           setIsLoading(false);
         } else {
           // Пользователь не выполнил вход, перенаправляем на страницу sign-in
-          window.location.href = '/sign-in';
+          //window.location.href = '/sign-in';
         }
       } catch (error) {
         console.error('Ошибка при выполнении запроса:', error);

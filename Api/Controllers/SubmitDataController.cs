@@ -6,6 +6,7 @@ using System.Net.Mail;
 using Api.Contracts;
 using Api.Server.Data;
 using Api.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Api.Server.Controllers
 {
@@ -125,6 +126,18 @@ namespace Api.Server.Controllers
                 return "Ответ не указан";
             else
                 return "Неизвестный ответ";
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Get([FromQuery] CancellationToken ct)
+        {
+            var notesQuery = _dbContext.SubmitData;
+
+            var noteDtos = await notesQuery
+            .Select(n => new QuestionDto(n.Id, n.Name, n.Email, n.Phone, n.CreatedAt, n.QuestionAnswersJson))
+            .ToListAsync(cancellationToken: ct);
+
+            return Ok(new GetNotesResponse(noteDtos));
         }
 
     }

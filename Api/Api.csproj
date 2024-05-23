@@ -10,9 +10,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Contracts\GetNotesRequest.cs" />
-    <Compile Remove="Contracts\GetNotesResponse.cs" />
-    <Compile Remove="Contracts\NoteDto.cs" />
     <Compile Remove="Controllers\TelegramBot.cs" />
   </ItemGroup>
 

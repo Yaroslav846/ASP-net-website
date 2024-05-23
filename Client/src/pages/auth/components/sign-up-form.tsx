@@ -24,7 +24,7 @@ const formSchema = z
       .string()
       .min(1, { message: 'Please enter your email' })
       .email({ message: 'Invalid email address' }),
-    username: z
+    name: z
       .string()
       .min(1, { message: 'Please enter your username' })
       .max(10, { message: 'Invalid username address' }),
@@ -50,9 +50,8 @@ export function SignUpForm({ className, ...props }: SignUpFormProps) {
     resolver: zodResolver(formSchema),
     defaultValues: {
       email: '',
-      username: '',
+      name: '',
       password: '',
-      confirmPassword: '',
     },
   })
 
@@ -101,7 +100,7 @@ export function SignUpForm({ className, ...props }: SignUpFormProps) {
             />
             <FormField
               control={form.control}
-              name='username'
+              name='name'
               render={({ field }) => (
                 <FormItem className='space-y-1'>
                   <FormLabel>UserName</FormLabel>

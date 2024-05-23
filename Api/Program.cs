@@ -12,6 +12,16 @@ var configuration = new ConfigurationBuilder()
     .AddJsonFile("appsettings.json")
     .Build();
 
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(policy =>
+    {
+        policy.WithOrigins("http://localhost:5173");
+        policy.AllowAnyHeader();
+        policy.AllowAnyMethod();
+    });
+});
+
 builder.Services.AddControllers();
 builder.Services.AddScoped<MyDbContext>();
 builder.Services.AddControllers().AddNewtonsoftJson();
@@ -43,4 +53,5 @@ app.MapControllers();
 
 app.MapFallbackToFile("/index.html");
 
+app.UseCors();
 app.Run();
