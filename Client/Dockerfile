@@ -1,13 +1,14 @@
+# Используем легкий образ node
 FROM node:18-alpine
 
+# Устанавливаем рабочую директорию внутри контейнера
 WORKDIR /app
 
-COPY package.json .
+# Копируем только папку dist из локальной файловой системы в контейнер
+COPY dist ./dist
 
-RUN npm install
+# Устанавливаем глобально serve для запуска статического сервера
+RUN npm install -g serve
 
-COPY . .
-
-RUN npm run build
-
-CMD [ "npm", "run", "preview" ]
+# Запускаем статический сервер для отдачи файлов из папки dist
+CMD ["serve", "-s", "dist", "-p", "5173"]

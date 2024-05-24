@@ -35,7 +35,8 @@ var app = builder.Build();
 
 using var scope = app.Services.CreateScope();
 await using var dbContext = scope.ServiceProvider.GetRequiredService<MyDbContext>();
-await dbContext.Database.EnsureCreatedAsync();
+//await dbContext.Database.EnsureCreatedAsync(); //создание пустой базы данных
+await dbContext.Database.MigrateAsync(); //создание миграции базы данных
 
 app.UseDefaultFiles();
 app.UseStaticFiles();

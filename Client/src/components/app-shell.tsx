@@ -17,21 +17,28 @@ export default function AppShell() {
         });
 
         if (response.status === 200) {
-          // Пользователь выполнил вход, завершаем загрузку
-          setIsLoading(false);
+          const userData = await response.json();
+          // Проверяем, что уровень пользователя больше 3
+          if (userData.level > 3) {
+            // Пользователь выполнил вход и его уровень больше 3, завершаем загрузку
+            setIsLoading(false);
+          } else {
+            // Пользователь выполнил вход, но его уровень меньше или равен 3, перенаправляем на страницу sign-in
+            window.location.href = '/sign-in';
+          }
         } else {
           // Пользователь не выполнил вход, перенаправляем на страницу sign-in
-          //window.location.href = '/sign-in';
+          window.location.href = '/sign-in';
         }
       } catch (error) {
         console.error('Ошибка при выполнении запроса:', error);
         // Обработка ошибок, например, перенаправление на страницу ошибки
-        window.location.href = '/500';
+        //window.location.href = '/500';
       }
     }
 
-    checkUserLogin(); // Вызываем функцию здесь, перед setTimeout
-  }, []);
+    checkUserLogin();
+}, []);
 
   if (isLoading) {
     return <Loader/>

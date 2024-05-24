@@ -70,7 +70,15 @@ namespace Api.Controllers
 
                 var user = _repository.GetById(userId);
 
-                return Ok(user);
+                var userData = new
+                {
+                    user.Id,
+                    user.Name,
+                    user.Email,
+                    user.Level
+                };
+
+                return Ok(userData);
             }
             catch (Exception)
             {
