@@ -11,6 +11,7 @@ export function RecentSales() {
     questionAnswersJson: string;
   }
   
+  
   const [notes, setNotes] = useState<Note[]>([]);
 
   useEffect(() => {
@@ -50,7 +51,7 @@ export function RecentSales() {
           <div className='ml-4 space-y-1'>
             <p className='text-sm font-medium leading-none'>{note.name}</p>
             <p className='text-sm text-muted-foreground'>
-              {note.email}
+            {new Date(note.createdAt).toLocaleString()}
             </p>
           </div>
           <div className='ml-auto font-medium'>{note.phone}</div>

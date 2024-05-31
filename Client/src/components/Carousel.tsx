@@ -1,41 +1,60 @@
-import Slider from 'react-slick';
-import 'slick-carousel/slick/slick.css';
-import 'slick-carousel/slick/slick-theme.css';
-import '../styles/Carousel.css'; // Подключаем файл стилей для кастомизации карточек
+import { Card, CardContent } from "@/components/ui/card";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";// Предполагая, что компонент Carousel предоставлен shadcn/ui
 
-const Carousel = () => {
-    const settings = {
-      dots: false,
-      infinite: true,
-      speed: 500,
-      slidesToShow: 3,
-      slidesToScroll: 1
-    };
-  
-    const products = [ // Список продуктов с изображением, ценой и текстом
-      { image: 'image1.png', price: '$99.99', text: 'Продукт 1' },
-      { image: 'image1.png', price: '$49.99', text: 'Продукт 2' },
-      { image: 'image1.png', price: '$79.99', text: 'Продукт 3' },
-      // Добавьте больше продуктов при необходимости
-    ];
-  
-    return (
-      <div className="slider-container">
-        <Slider {...settings}>
-          {products.map((product, index) => (
-            <div key={index}>
-              <div className="cards">
-                <img src={product.image} alt={`Slide ${index + 1}`} />
-                <div className="content">
-                  <div className="price">{product.price}</div>
-                  <div className="text">{product.text}</div>
-                </div>
-              </div>
+const carouselProducts = [
+  {
+    id: 1,
+    name: "Acme Circles T-Shirt",
+    price: "$20.00 USD",
+    imageUrl: "woll.jpeg",
+    link: "https://demo.vercel.store/product/acme-geometric-circles-tshirt"
+  },
+  {
+    id: 2,
+    name: "Acme Drawstring Bag",
+    price: "$12.00 USD",
+    imageUrl: "woll.jpeg",
+    link: "https://demo.vercel.store/product/acme-drawstring-bag"
+  },
+  {
+    id: 3,
+    name: "Acme Cup",
+    price: "$15.00 USD",
+    imageUrl: "woll.jpeg",
+    link: "https://demo.vercel.store/product/acme-cup"
+  },
+  // Дополнительные элементы карусели
+];
+
+export default function ProductCarousel() {
+  return (
+    <Carousel className="w-full">
+      <CarouselContent className="">
+        {carouselProducts.map(product => (
+          <CarouselItem key={product.id} className="l-1 md:basis-1/2 lg:basis-1/3">
+            <div className=" h-full">
+              <Card>
+                <CardContent className="flex-col flex aspect-square items-center justify-center p-6">
+                  <img src={product.imageUrl} alt={product.name} className="h-auto" />
+                  <div className="text-center">
+                    <h3>{product.name}</h3>
+                    <p>{product.price}</p>
+                    <a href={product.link} className="text-blue-500 hover:underline">View Details</a>
+                  </div>
+                </CardContent>
+              </Card>
             </div>
-          ))}
-        </Slider>
-      </div>
-    );
-  };
-  
-  export default Carousel;
+          </CarouselItem>
+        ))}
+      </CarouselContent>
+      <CarouselPrevious />
+      <CarouselNext />
+    </Carousel>
+  )
+}

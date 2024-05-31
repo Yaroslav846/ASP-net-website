@@ -33,7 +33,7 @@ export default function AppShell() {
       } catch (error) {
         console.error('Ошибка при выполнении запроса:', error);
         // Обработка ошибок, например, перенаправление на страницу ошибки
-        //window.location.href = '/500';
+        window.location.href = '/500';
       }
     }
 
