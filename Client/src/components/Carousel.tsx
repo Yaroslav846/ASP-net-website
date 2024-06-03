@@ -33,8 +33,9 @@ const carouselProducts = [
 ];
 
 export default function ProductCarousel() {
+
   return (
-    <Carousel className="w-full">
+    <Carousel className="container py-20 sm:py-32">
       <CarouselContent className="">
         {carouselProducts.map(product => (
           <CarouselItem key={product.id} className="l-1 md:basis-1/2 lg:basis-1/3">

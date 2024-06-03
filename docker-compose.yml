@@ -10,9 +10,14 @@ services:
 
   client:
     container_name: client
-    image: pclient
     build:
       context: ./Client
+      dockerfile: Dockerfile
+
+  adminpanel:
+    container_name: adminpanel
+    build:
+      context: ./Admin
       dockerfile: Dockerfile
 
   postgres_db:

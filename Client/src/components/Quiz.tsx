@@ -2,6 +2,7 @@ import { useState } from 'react';
 import axios from 'axios';
 import '../styles/Quiz.css'; // Import CSS Modules
 import PhoneInput from './PhoneInput';
+import { Button } from './ui/button';
 
 
 interface Question {
@@ -169,7 +170,7 @@ const Questionnaire = () => {
           window.location.reload();
         }, 4000);
       })
-      .catch((error) => {
+      .catch((error: any) => {
         console.error(error);
         // Handle error
       });
@@ -186,7 +187,7 @@ const Questionnaire = () => {
 
     if (question.type === 'checkbox') {
       return (
-        <div className='q_formsdisplay'> 
+        <div className='flex items-center flex-col'> 
           <h3>{question.question}</h3>
           <div className="checkbox-answers">
             {question.answers?.map((answer, answerIndex) => (
@@ -201,12 +202,12 @@ const Questionnaire = () => {
               </label>
             ))}
           </div>
-            <button className="q_button" onClick={handleNextQuestion}>Следующий</button>
+            <Button className="" onClick={handleNextQuestion}>Следующий</Button>
         </div>
       );
     } else if (question.type === 'image') {
       return (
-        <div className='q_formsdisplay'>
+        <div className='flex items-center flex-col'>
           <h3>{question.question}</h3>
           <div className="image-answers">
             {question.answers?.map((answer, answerIndex) => (
@@ -231,13 +232,13 @@ const Questionnaire = () => {
               </div>
             ))}
           </div>
-            <button className="q_button" onClick={handleNextQuestion}>Следующий</button>
+            <Button className="" onClick={handleNextQuestion}>Следующий</Button>
         </div>
       );
     }
      else if (question.type === 'text') {
       return (
-        <div className='q_formsdisplay'>
+        <div className='flex items-center flex-col'>
           <h3>{question.question}</h3>
           <ul className="text-answers">
             {question.answers?.map((answer, answerIndex) => (
@@ -250,12 +251,12 @@ const Questionnaire = () => {
               </li>
             ))}
           </ul>
-            <button className="q_button" onClick={handleNextQuestion}>Следующий</button>
+            <Button className="" onClick={handleNextQuestion}>Следующий</Button>
         </div>
       );
     } else if (question.type === 'slider') {
       return (
-        <div className="q_formsdisplay" key={index}>
+        <div className="flex items-center flex-col" key={index}>
           <h3>{question.question}</h3>
           <input
             type="range"
@@ -265,7 +266,7 @@ const Questionnaire = () => {
             onChange={handleSliderChange}
           />
           <span><h5>{sliderValue}</h5></span>
-            <button className="q_button" onClick={handleNextQuestion}>Следующий</button>
+            <Button className="" onClick={handleNextQuestion}>Следующий</Button>
         </div>
       );
     } 
@@ -276,7 +277,7 @@ const Questionnaire = () => {
   const progress = ((currentQuestionIndex) / questions.length) * 100;
 
   return (
-    <div className='q_formsdisplay1'>
+    <div className='container bg-muted/50 border rounded-lg py-121 flex items-center flex-col'>
         <h2>Выбери свою кухню</h2>
         <div className="progres">
           <div style={{ width: `${progress}%` }} className="progres__inner"></div>
@@ -325,7 +326,7 @@ const Questionnaire = () => {
                 />
               </div>
             </form>
-            <button className="q_button" onClick={handleSubmit}>Отправить</button>
+            <Button className="" onClick={handleSubmit}>Отправить</Button>
         </div> 
         )}
     </div>
