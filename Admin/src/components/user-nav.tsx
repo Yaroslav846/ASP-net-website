@@ -12,6 +12,26 @@ import {
 } from '@/components/ui/dropdown-menu'
 
 export function UserNav() {
+  const handleLogout = async () => {
+    try {
+      const response = await fetch('/api/logout', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+      });
+
+      if (response.status === 200) {
+        // Успешно вышли из системы, перенаправляем на страницу входа
+        window.location.href = '/sign-in';
+      } else {
+        // Обработка других кодов состояния ответа
+        throw new Error('Ошибка выхода из системы');
+      }
+    } catch (error) {
+      console.error('Ошибка при выполнении запроса на выход из системы:', error);
+      // Обработка ошибок, например, перенаправление на страницу ошибки
+      window.location.href = '/500';
+    }
+  };
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -48,7 +68,7 @@ export function UserNav() {
           <DropdownMenuItem>New Team</DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
-        <DropdownMenuItem>
+        <DropdownMenuItem onClick={handleLogout}>
           Log out
           <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
         </DropdownMenuItem>

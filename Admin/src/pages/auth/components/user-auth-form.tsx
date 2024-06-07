@@ -59,6 +59,9 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
       if (!response.ok) {
         throw new Error('Failed to login');
       }
+      else {
+        window.location.href = '/admin';
+      }
   
       // Данные успешно отправлены
       console.log('Login successful');

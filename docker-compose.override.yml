@@ -38,3 +38,5 @@ services:
       - ./nginx.conf:/etc/nginx/nginx.conf
     ports:
       - "80:80"
+    depends_on:
+      - api

@@ -71,6 +71,7 @@
 @layer base {
   :root {
     --background: 0 0% 100%;
+    --progress: 0 0% 0%;
     --foreground: 240 10% 3.9%;
     --card: 0 0% 100%;
     --card-foreground: 240 10% 3.9%;
@@ -94,6 +95,7 @@
 
   .dark {
     --background: 20 14.3% 4.1%;
+    --progress: 0 0% 100%;
     --foreground: 0 0% 95%;
     --card: 24 9.8% 10%;
     --card-foreground: 0 0% 95%;
@@ -122,4 +124,8 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+.selected {
+  border: 4px solid hsl(var(--primary));
 }

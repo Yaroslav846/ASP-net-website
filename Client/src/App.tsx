@@ -14,6 +14,7 @@ import { Sponsors } from "./components/Sponsors";
 import { Team } from "./components/Team";
 import { Testimonials } from "./components/Testimonials";
 import "./App.css";
+import Carousel from "./components/Carousel";
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
       <Sponsors />
       <About />
       <HowItWorks />
+      <Carousel/>
       <Features />
       <Services />
       <Cta />

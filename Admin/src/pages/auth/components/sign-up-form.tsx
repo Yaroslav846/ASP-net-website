@@ -15,6 +15,7 @@ import { Input } from '@/components/ui/input'
 import { Button } from '@/components/custom/button'
 import { PasswordInput } from '@/components/custom/password-input'
 import { cn } from '@/lib/utils'
+import { toast } from '@/components/ui/use-toast'
 
 interface SignUpFormProps extends HTMLAttributes<HTMLDivElement> {}
 
@@ -67,17 +68,29 @@ export function SignUpForm({ className, ...props }: SignUpFormProps) {
       });
   
       if (!response.ok) {
+        Notification("Ошибка регистрации")
         throw new Error('Failed to login');
       }
   
       // Данные успешно отправлены
-      console.log('Login successful');
+      Notification("Вы успешно зарегистрировались")
     } catch (error) {
-      console.error('Error:', error);
+      Notification("Ошибка регистрации")
       // Обработка ошибки, например, отображение сообщения об ошибке пользователю
     } finally {
       setIsLoading(false);
     }
+  }
+
+  function Notification(_p0: string) {
+    toast({
+      title: 'You submitted the following values:',
+      description: (
+        <pre className='mt-2 w-[340px] rounded-md bg-slate-950 p-4'>
+          <div>{_p0}</div>
+        </pre>
+      ),
+    })
   }
 
   return (

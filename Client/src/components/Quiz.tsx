@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import axios from 'axios';
-import '../styles/Quiz.css'; // Import CSS Modules
-import PhoneInput from './PhoneInput';
-import { Button } from './ui/button';
-
+import { Input } from './ui/input';
+import { Button } from "./ui/button"
+import { Checkbox } from "./ui/checkbox"
+import { Slider } from "./ui/slider"
 
 interface Question {
   question: string;
@@ -49,21 +49,21 @@ const Questionnaire = () => {
     },
     {
       question: 'Учесть встраиваемую технику?',
-      answers: [{option: 'Плита'}, {option:'Духовой шкаф'}, {option:'Вытяжка'}, {option:'Холодильник'}],
+      answers: [{ option: 'Плита' }, { option: 'Духовой шкаф' }, { option: 'Вытяжка' }, { option: 'Холодильник' }],
       type: 'checkbox',
     },
     {
       question: 'Выберите тип столешницы',
       answers: [
-        {option: 'Искусственный камень', image: 'Stone.png'},
-        {option: 'Пластик', image: 'plastic.jpeg'}, 
-        {option: 'Натуральный камень', image: 'natural_stone.png'}
+        { option: 'Искусственный камень', image: 'Stone.png' },
+        { option: 'Пластик', image: 'plastic.jpeg' },
+        { option: 'Натуральный камень', image: 'natural_stone.png' }
       ],
       type: 'image'
     },
     {
       question: 'Укажите длину Вашей кухни',
-      answers: [{option:'1,5-2,4'}, {option:'2,5-3,4'}, {option:'3,5-4,0'}, {option:'Больше 4м'}],
+      answers: [{ option: '1,5-2,4' }, { option: '2,5-3,4' }, { option: '3,5-4,0' }, { option: 'Больше 4м' }],
       type: 'text'
     },
     {
@@ -73,11 +73,12 @@ const Questionnaire = () => {
       type: 'slider'
     }
   ];
-  
+
 
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState<number>(0);
   const [selectedAnswer, setSelectedAnswer] = useState<string | string[]>([]);
-  const [sliderValue, setSliderValue] = useState<number>(0);
+  const [value, setValue] = useState<number[]>([50000])
+  const [wchbox] = useState();
   const [dimensions, setDimensions] = useState<string>('');
   const [responses, setResponses] = useState<string[]>([]);
   const [name, setName] = useState<string>('');
@@ -100,13 +101,6 @@ const Questionnaire = () => {
     }
   };
 
-  const handleSliderChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const value = parseInt(event.target.value);
-    const roundedValue = Math.round(value / 1000) * 1000;
-    setSliderValue(roundedValue);
-    setSelectedAnswer(roundedValue.toString());
-  };
-
   const handleNextQuestion = () => {
     if (selectedAnswer || questions[currentQuestionIndex].type === 'slider') {
       if (currentQuestionIndex === 2 && !dimensions) {
@@ -115,7 +109,7 @@ const Questionnaire = () => {
       }
       const updatedResponses = [...responses];
       updatedResponses[currentQuestionIndex] =
-        questions[currentQuestionIndex].type === 'slider' ? sliderValue.toString() : selectedAnswer as string;
+        questions[currentQuestionIndex].type === 'slider' ? value.toString() : selectedAnswer as string;
       setResponses(updatedResponses);
       setSelectedAnswer('');
       setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
@@ -182,46 +176,45 @@ const Questionnaire = () => {
   };
 
   const renderQuestion = (question: Question, index: number): React.ReactNode => {
-    
+
     if (index !== currentQuestionIndex) return null;
 
     if (question.type === 'checkbox') {
       return (
-        <div className='flex items-center flex-col'> 
-          <h3>{question.question}</h3>
+        <div className='flex flex-col items-center'>
+          <h3 className="text-xl md:text-2xl font-normal mb-5">{question.question}</h3>
           <div className="checkbox-answers">
             {question.answers?.map((answer, answerIndex) => (
-              <label key={answerIndex} className="checkbox-label">
-                <input
-                  type="checkbox"
-                  checked={selectedAnswer.includes(answer.option)}
-                  onChange={() => handleAnswer(answer.option)}
-                  className="blue-checkbox" 
+              <div key={answerIndex} className="checkbox-label">
+                <Checkbox
+                  checked={wchbox}
+                  onCheckedChange={() => handleAnswer(answer.option)} 
                 />
                 {answer.option}
-              </label>
+              </div>
             ))}
           </div>
-            <Button className="" onClick={handleNextQuestion}>Следующий</Button>
+          <Button className="mt-4 text-x md:text-xl text-black" onClick={handleNextQuestion}>Следующий</Button>
         </div>
       );
     } else if (question.type === 'image') {
       return (
-        <div className='flex items-center flex-col'>
-          <h3>{question.question}</h3>
-          <div className="image-answers">
+        <div className='flex flex-col items-center'>
+          <h3 className="text-xl md:text-2xl font-normal mb-5">{question.question}</h3>
+          <div className="image-answers flex flex-wrap justify-center sm:gap-8 md:gap-12">
             {question.answers?.map((answer, answerIndex) => (
-              <div className='img-block' key={answerIndex}>
+              <div className='img-block flex flex-col items-center' key={answerIndex}>
                 <img
                   src={answer.image}
                   alt={answer.option}
                   onClick={() => handleAnswer(answer.option)}
                   className={`image-option ${selectedAnswer === answer.option ? 'selected' : ''}`}
+                  style={{ objectFit: 'cover', objectPosition: 'center', width: '300px', height: '300px' }}
                 />
-                <h5 style={{marginTop: 15 + 'px'}}>{answer.option}</h5>
+                <h5 className="text-x md:text-xl font-bold" style={{ marginTop: 15 + 'px' }}>{answer.option}</h5>
                 {selectedAnswer === answer.option && question.question === 'Выберите форму вашей кухни' && (
-                  <div className="dimensions-input">
-                    <input
+                  <div className="dimensions-input mt-5">
+                    <Input
                       type="text"
                       placeholder="Укажите длинну кухни"
                       value={dimensions}
@@ -232,17 +225,17 @@ const Questionnaire = () => {
               </div>
             ))}
           </div>
-            <Button className="" onClick={handleNextQuestion}>Следующий</Button>
+          <Button className="mt-4 text-x md:text-xl text-black" onClick={handleNextQuestion}>Следующий</Button>
         </div>
       );
     }
-     else if (question.type === 'text') {
+    else if (question.type === 'text') {
       return (
-        <div className='flex items-center flex-col'>
-          <h3>{question.question}</h3>
-          <ul className="text-answers">
+        <div className='flex flex-col items-center '>
+          <h3 className="text-xl md:text-2xl font-normal mb-5">{question.question}</h3>
+          <ul className="text-x md:text-xl font-normal">
             {question.answers?.map((answer, answerIndex) => (
-              <li
+              <li 
                 key={answerIndex}
                 onClick={() => handleAnswer(answer.option)}
                 className={selectedAnswer === answer.option ? 'selected' : ''}
@@ -251,25 +244,32 @@ const Questionnaire = () => {
               </li>
             ))}
           </ul>
-            <Button className="" onClick={handleNextQuestion}>Следующий</Button>
+          <Button className="mt-4 text-x md:text-xl text-black" onClick={handleNextQuestion}>Следующий</Button>
         </div>
       );
     } else if (question.type === 'slider') {
       return (
-        <div className="flex items-center flex-col" key={index}>
-          <h3>{question.question}</h3>
-          <input
-            type="range"
-            min={question.minValue}
-            max={question.maxValue}
-            value={sliderValue}
-            onChange={handleSliderChange}
-          />
-          <span><h5>{sliderValue}</h5></span>
-            <Button className="" onClick={handleNextQuestion}>Следующий</Button>
+        <div className="flex flex-col items-center" key={index}>
+          <h3 className="text-xl md:text-2xl font-normal mb-5">{question.question}</h3>
+          <Slider
+              id="maxlength"
+              max={200000}
+              min={50000}
+              defaultValue={value}
+              step={1000}
+              onValueChange={(newValue) => {
+                setValue(newValue); // Update slider value state
+                setSelectedAnswer(newValue.toString()); // Update selectedAnswer as string
+            }} 
+              className="[&_[role=slider]]:h-4 [&_[role=slider]]:w-4"
+              aria-label="Maximum Length"
+              
+            />
+          <span><h5>{value}</h5></span>
+          <Button className="mt-4 text-x md:text-xl text-black" onClick={handleNextQuestion}>Следующий</Button>
         </div>
       );
-    } 
+    }
 
     return null;
   };
@@ -277,60 +277,63 @@ const Questionnaire = () => {
   const progress = ((currentQuestionIndex) / questions.length) * 100;
 
   return (
-    <div className='container bg-muted/50 border rounded-lg py-121 flex items-center flex-col'>
-        <h2>Выбери свою кухню</h2>
-        <div className="progres">
-          <div style={{ width: `${progress}%` }} className="progres__inner"></div>
-        </div>
+    <div className='flex flex-col items-center'>
+      <h1 className="text-4xl md:text-5xl font-bold mb-5">Выбери свою кухню</h1>
+      <div className="mb-5 h-2.5 rounded-md bg-[hsl(var(--progress))] w-full">
+        <div style={{ width: `${progress}%` }} className="h-full rounded-md bg-[hsl(var(--primary))]"></div>
+      </div>
+      <h1 className="flex flex-wrap justify-center">
         {questions.map((question, index) => renderQuestion(question, index))}
-        {emailSent && (
-          <div>
-            <h4>Уведомления: Спасибо за прохождени опроса. Мы с вами скоро свяжимся!</h4>
-          </div>
-        )}
-        {showNotification && (
-          <h4>Пожалуйста заполните поля</h4>
-        )}
-        {currentQuestionIndex === questions.length && (
-          <div>
-            <h3>Контактная информация</h3>
-            <form className='form_label'>
-              <div className="form-row">
-                <label htmlFor="name"><h5>Имя:</h5></label>
-                <input
-                  type="text"
-                  id="name"
-                  className="input-field"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                />
-              </div>
-              <div className="form-row">
-                <label htmlFor="phone"><h5>Телефон:</h5></label>
-                <PhoneInput
-                  type="text"
-                  id="phone-input"
-                  className="input-field"
-                  value={phone}
-                  onChange={(e) => setPhone(e.target.value)}
-                />
-              </div>
-              <div className="form-row">
-                <label htmlFor="email"><h5>Почта:</h5></label>
-                <input
-                  type="email"
-                  id="email"
-                  className="input-field"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                />
-              </div>
-            </form>
-            <Button className="" onClick={handleSubmit}>Отправить</Button>
-        </div> 
-        )}
+      </h1>
+      {emailSent && (
+        <div>
+          <h4>Уведомления: Спасибо за прохождени опроса. Мы с вами скоро свяжимся!</h4>
+        </div>
+      )}
+      {showNotification && (
+        <h4>Пожалуйста заполните поля</h4>
+      )}
+      {currentQuestionIndex === questions.length && (
+        <div className='flex flex-col'>
+          <h3>Контактная информация</h3>
+          <form className='form_label flex flex-col items-center'>
+            <div className="form-row flex flex-col items-center">
+              <label htmlFor="name"><h5>Имя:</h5></label>
+              <Input
+                type="text"
+                id="name"
+                className="input-field"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+              />
+            </div>
+            <div className="form-row flex flex-col items-center">
+              <label htmlFor="phone"><h5>Телефон:</h5></label>
+              <Input
+                type="text"
+                id="phone-input"
+                className="input-field"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+              ></Input>
+            </div>
+            <div className="form-row flex flex-col items-center">
+              <label htmlFor="email"><h5>Почта:</h5></label>
+              <Input
+                type="email"
+                id="email"
+                className="input-field"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+            </div>
+          </form>
+          <Button className="mt-4" onClick={handleSubmit}>Отправить</Button>
+        </div>
+      )}
     </div>
   );
 };
+
 
 export default Questionnaire;
