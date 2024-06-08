@@ -55,31 +55,31 @@ const sidebarNavItems = [
   {
     title: 'Profile',
     icon: <IconUser size={18} />,
-    href: '/settings',
+    href: '/admin/settings',
   },
   {
     title: 'Account',
     icon: <IconTool size={18} />,
-    href: '/settings/account',
+    href: '/admin/settings/account',
   },
   {
     title: 'Appearance',
     icon: <IconPalette size={18} />,
-    href: '/settings/appearance',
+    href: '/admin/settings/appearance',
   },
   {
     title: 'Notifications',
     icon: <IconNotification size={18} />,
-    href: '/settings/notifications',
+    href: '/admin/settings/notifications',
   },
   {
     title: 'Display',
     icon: <IconBrowserCheck size={18} />,
-    href: '/settings/display',
+    href: '/admin/settings/display',
   },
   {
     title: 'Error Example',
     icon: <IconExclamationCircle size={18} />,
-    href: '/settings/error-example',
+    href: '/admin/settings/error-example',
   },
 ]

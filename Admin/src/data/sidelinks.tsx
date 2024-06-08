@@ -163,7 +163,7 @@ export const sidelinks: SideLink[] = [
   {
     title: 'Settings',
     label: '',
-    href: '/settings',
+    href: '/admin/settings',
     icon: <IconSettings size={18} />,
   },
 ]

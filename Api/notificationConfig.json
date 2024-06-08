@@ -1,0 +1,8 @@
+{
+  "Id": 0,
+  "Mobile": true,
+  "communication_emails": false,
+  "social_emails": false,
+  "marketing_emails": false,
+  "security_emails": true
+}

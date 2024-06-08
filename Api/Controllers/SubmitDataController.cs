@@ -16,6 +16,7 @@ namespace Api.Server.Controllers
     public class SubmitDataController : ControllerBase
     {
         private readonly MyDbContext _dbContext;
+        private readonly string _configFilePath = "notificationConfig.json";
 
         public SubmitDataController(MyDbContext dbContext)
         {
@@ -42,10 +43,18 @@ namespace Api.Server.Controllers
                 await SaveToDatabase(formData);
 
                 // Send data to email
-                await SendToEmail(formData);
+                var config = await GetNotificationConfig();
+                if (config != null && config.social_emails)
+                {
+                    // Send data to email
+                    await SendToEmail(formData);
+                }
 
+                if (config != null && config.marketing_emails)
+                { 
                 // Send data to Telegram
-                //await SendToTelegram(formData);
+                    await SendToTelegram(formData);
+                }
 
                 return Ok();
             }
@@ -138,6 +147,17 @@ namespace Api.Server.Controllers
             .ToListAsync(cancellationToken: ct);
 
             return Ok(new GetNotesResponse(noteDtos));
+        }
+
+        private async Task<NotificationConfig> GetNotificationConfig()
+        {
+            if (!System.IO.File.Exists(_configFilePath))
+            {
+                return null;
+            }
+
+            var configJson = await System.IO.File.ReadAllTextAsync(_configFilePath);
+            return JsonConvert.DeserializeObject<NotificationConfig>(configJson);
         }
 
     }

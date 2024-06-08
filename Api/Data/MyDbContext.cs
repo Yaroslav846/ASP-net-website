@@ -14,6 +14,7 @@ namespace Api.Server.Data
 
         public DbSet<SubmitData> SubmitData { get; set; }
         public DbSet<User> Users { set; get; }
+        //public DbSet<NotificationConfig> NotificationConfigs { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
